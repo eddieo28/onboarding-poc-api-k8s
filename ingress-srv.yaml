@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+# UPDATE API
+kind: Ingress
+metadata:
+  name: ingress-service
+  namespace: python-api-test
+  annotations:
+    kubernetes.io/ingress.class: 'nginx'
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+    # ADD ANNOTATION
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    # UPDATE ANNOTATION
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /hello/?(.*)
+            # UPDATE PATH
+            pathType: Prefix
+            # ADD PATHTYPE
+            backend:
+              service:
+                # UPDATE SERVICE FIELDS
+                name: python-api-test-service
+                port:
+                  number: 5000

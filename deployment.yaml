@@ -1,0 +1,39 @@
+#Deployment for python-api
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-api-test
+  namespace: python-api-test
+  labels:
+    app: python-api-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-api-test
+  template:
+    metadata:
+      labels:
+        app: python-api-test
+    spec:
+      containers:
+      - name: python-api-test
+        image: digitalocean/flask-helloworld
+        ports:
+        - containerPort: 5000
+
+---
+#Service for the python-api-test deployment and pods.
+apiVersion: v1
+kind: Service
+metadata:
+  name: python-api-test-service
+  namespace: python-api-test
+spec:
+  type: ClusterIP
+  selector:
+    app: python-api-test
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: 5000
